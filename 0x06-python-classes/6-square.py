@@ -1,96 +1,67 @@
 #!/usr/bin/python3
+"""Square module.
+
+This module contains a class that defines a square and its size and its
+position on the screen, checking if the given values are right, and a setter
+and getter methods to set or get them. There's also an area method that returns
+the area of the square, another one that handles the print of the square.
+
+"""
 
 
-class Square:
-    """
-    class square that has attributes:
-        size
-    some attributes are protected from input.
-    """
+class Square():
+    """Defines a square."""
+
     def __init__(self, size=0, position=(0, 0)):
+        """Sets the necessary attributes for the Square object.
+
+        Args:
+            size (int): the size of one edge of the square.
+            position (tuple): the coordinates of the square.
         """
-        initialization function for our square clasee
-        """
-        if self.__validate_size(size):
-            self.__size = size
-        if self.__validate_pos(position):
-            self.__position = position
+        self.size = size
+        self.position = position
 
     @property
     def size(self):
-        """
-        getter for size attribute
-        """
+        """Get or set the size of the square."""
         return self.__size
 
     @size.setter
     def size(self, value):
-        """
-        setter for size attribute
-        """
-        if self.__validate_size(value):
-            self.__size = value
+        if type(value) is int:
+            if value >= 0:
+                self.__size = value
+            else:
+                raise ValueError("size must be >= 0")
+        else:
+            raise TypeError("size must be an integer")
 
     @property
     def position(self):
-        """
-        getter for position attribute
-        """
+        """Get or set the position of the square."""
         return self.__position
 
     @position.setter
     def position(self, value):
-        """
-        setter for position attribute
-        """
-        if self.__validate_pos(value):
+        if type(value) is tuple and len(value) is 2 and \
+            type(value[0]) is int and type(value[1]) is int and \
+                value[0] >= 0 and value[1] >= 0:
             self.__position = value
+        else:
+            raise TypeError("position must be a tuple of 2 positive integers")
 
     def area(self):
-        """
-        calculates the area of the square
-        """
+        """Returns the current square area."""
         return self.__size ** 2
 
     def my_print(self):
-        """
-        prints the square using '#' characters
-        also takes into account position (x, y) offsets
-        """
-        i = 0
-        if self.__size == 0:
-            print()
-            return
-        for i in range(0, self.__position[1]):
-            print()
-        i = 0
-        for i in range(0, self.__size):
-            j = 0
-            x_pad = 0
-            for x_pad in range(0, self.__position[0]):
-                print(" ", end='')
-            for j in range(0, self.__size):
-                print("#", end='')
-            print()
-
-    def __validate_size(self, size):
-        """
-        validates the size, checking for errors
-        """
-        if type(size) != int:
-            raise TypeError("size must be an integer")
-        elif size < 0:
-            raise ValueError("size must be >= 0")
+        """Prints the square with the # character on stdout."""
+        if self.__size > 0:
+            for y in range(self.__position[1]):
+                print()
+            for x in range(self.__size):
+                print(' ' * self.__position[0], end='')
+                print('#' * self.__size)
         else:
-            return True
-        return False
-
-    def __validate_pos(self, position):
-        """
-        validates the position, checking for type errors
-        """
-        if not isinstance(position, type((0, 0))):
-            raise TypeError("position must be a tuple of 2 positive integers")
-            return False
-        return True
-
+            print()
